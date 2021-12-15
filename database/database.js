@@ -10,7 +10,7 @@ const cliente = new Client({
 
 async function addPonto(req, res){
     const {nomeLocal, lat, lng} = req.body;
-    cliente.connect().then(()=> console.log('cliente conectado'))
+    await cliente.connect().then(()=> console.log('cliente conectado'))
         console.log(lat, lng)
         const query = `insert into ponto (nome, localizacao) values('${nomeLocal}', 'POINT(${lat} ${lng})')`;
 
