@@ -37,8 +37,9 @@ function initMap() {
 }
 
 function salvar(){
+    let input = document.getElementById('nome').value;
     let obj = {
-      nomeLocal: document.getElementById('nome').value,
+      nomeLocal: input,
       lat: marker.getPosition().lat(),
       lng: marker.getPosition().lng()
     }
@@ -52,6 +53,16 @@ function salvar(){
       body: JSON.stringify(obj)
     }).then((response =>{alert('inserido')}))
     .catch(error =>{alert('Falha ao salvar' + error)})
+
+    input.value = ''
+    let modal = document.querySelector('.container')
+      modal.classList.remove('mostrar')
+}
+
+function closeModal(button){
+  event.preventDefault()
+  let modal = document.querySelector('.container')
+      modal.classList.remove('mostrar')
 }
 
 function insertValues(){
