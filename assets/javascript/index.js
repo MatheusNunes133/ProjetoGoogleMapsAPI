@@ -28,18 +28,14 @@ function initMap() {
     alterarMarcador(event);
     insertValues();
   })
-  map.addListener("dblclick", event =>{
-    adicionarMarcador(event)
-  })
-
  
-
 }
 
 function salvar(){
     let input = document.getElementById('nome').value;
     let obj = {
       nomeLocal: input,
+      desc: document.querySelector('textarea').value,
       lat: marker.getPosition().lat(),
       lng: marker.getPosition().lng()
     }
@@ -54,13 +50,19 @@ function salvar(){
     }).then((response =>{alert('inserido')}))
     .catch(error =>{alert('Falha ao salvar' + error)})
 
-    input.value = ''
+      input.value = ''
+    let textarea = document.querySelector('textarea').value
+      textarea.value = ''
     let modal = document.querySelector('.container')
       modal.classList.remove('mostrar')
 }
 
 function closeModal(button){
   event.preventDefault()
+  let input = document.getElementById('nome').value;
+    input.value = ' '
+  let textarea = document.querySelector('textarea').value
+    textarea.value = ' '
   let modal = document.querySelector('.container')
       modal.classList.remove('mostrar')
 }
@@ -74,12 +76,6 @@ function alterarMarcador(event){
   marker.setPosition(event.latLng)
 }
 
-function adicionarMarcador(event){
-  newMarker = new google.maps.Marker({
-    position: event.latLng,
-    map: map,
-  })
-}
 
 
 

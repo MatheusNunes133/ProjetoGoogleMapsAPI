@@ -10,14 +10,20 @@
     <div class="container">
         <form action="#" method="post">
             <button class="close" onclick="closeModal(this)">X</button>
+            <h2>Informações</h2>
             <div class="infos">
-                <label for="">Nome:</label>
-                <input type="text" id="nome">
-                
-            </div>
+              <div class="info--nome">
+                  <label for="">Nome:</label>
+                  <input type="text" id="nome" placeholder="Informe o nome...">
+              </div>
+              <div class="info--desc">
+                  <label for="">Descrição:</label><br/>
+                  <textarea class="desc" cols="30" rows="10" maxlength="250" placeholder="Informe a descrição..."></textarea>
+                </div>
+              </div>
             
             <div>
-                <button type="button" onclick="salvar()">Salvar</button>
+                <button type="button" onclick="salvar()" class="save">Salvar</button>
             </div>
         </form>
 
