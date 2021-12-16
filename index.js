@@ -6,7 +6,12 @@ const port = 3000;
 
 
 app.use(express.json())
-app.use(cors())
+
+app.use(function(req, res, next){
+    app.use(cors())
+    res.header("Access-Control-Allow-Origin", "*");
+    next()
+});
 
 
 app.listen(port,()=>{
