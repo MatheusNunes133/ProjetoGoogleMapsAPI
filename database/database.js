@@ -11,9 +11,7 @@ cliente.connect().then(()=> console.log('cliente conectado')).catch((erro)=>{con
 
 async function addPonto(req, res){
     const {nomeLocal,desc, lat, lng} = req.body;
-    
-        console.log(lat, lng)
-        const query = `insert into ponto (nome, localizacao, descricao) values('${nomeLocal}', 'POINT(${lat} ${lng})', '${desc}')`;
+    const query = `insert into ponto (nome, localizacao, descricao) values('${nomeLocal}', ST_GeomFromText('POINT(${lat} ${lng})'), '${desc}')`;
 
         cliente.query(query, (error, results)=>{
             if(error){
@@ -27,7 +25,14 @@ async function addPonto(req, res){
     
 }
 
+async function getPontos(req, res){
+    const query = 'select nome, st_X(localizacao) as lat, st_Y(localizacao) as lng, descricao from ponto'
+    const resultado = await cliente.query(query)
+        res.status(200).send(resultado.rows)
+}
+
 
 module.exports = {
-    addPonto
+    addPonto,
+    getPontos
 };

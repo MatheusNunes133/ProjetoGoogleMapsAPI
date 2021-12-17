@@ -28,7 +28,27 @@ function initMap() {
     alterarMarcador(event);
     insertValues();
   })
- 
+  
+  getPontos()
+}
+
+
+function getPontos(){
+    fetch('http://localhost:3000/getPontos')
+    .then((res)=>{
+      return res.json()
+    }).then((response)=>{
+        console.log(response)
+        for(let i=0; i<response.length;i++){
+          let pontosCriados = new google.maps.LatLng(response[i].lat, response[i].lng)
+              marker = new google.maps.Marker({
+                position: pontosCriados,
+                map:map,
+                draggable: true,
+                animation: google.maps.Animation.BOUNCE
+              });
+        }
+    })
 }
 
 function salvar(){
