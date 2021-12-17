@@ -2,6 +2,7 @@ let map;
 let centerMarker;
 let marker;
 let newMarker;
+let saveMarker;
 
 function initMap() {
   centerMarker = new google.maps.LatLng(-6.892216009370435, -38.55855970419098 )
@@ -20,19 +21,21 @@ function initMap() {
     position: centerMarker,
     map:map,
     draggable: true,
-    animation: google.maps.Animation.BOUNCE
   });
 
+  marker.addListener('click',()=>{
+    openWindowInfo()
+  })
 
   map.addListener("click", event =>{
     alterarMarcador(event);
-    insertValues();
-  })
-  
-  window.addEventListener('load',()=>{
-    getPontos()
+    openModal();
   })
 }
+
+window.addEventListener('load',()=>{
+  getPontos()
+})
 
 
 function getPontos(){
@@ -43,11 +46,10 @@ function getPontos(){
         console.log(response)
         for(let i=0; i<response.length;i++){
           let pontosCriados = new google.maps.LatLng(response[i].lat, response[i].lng)
-              marker = new google.maps.Marker({
+              saveMarker = new google.maps.Marker({
                 position: pontosCriados,
                 map:map,
                 draggable: true,
-                animation: google.maps.Animation.BOUNCE
               });
         }
     })
@@ -72,15 +74,14 @@ function salvar(){
     }).then((response =>{alert('inserido')}))
     .catch(error =>{alert('Falha ao salvar' + error)})
 
-      input.value = ''
+      input.textContent = ''
     let textarea = document.querySelector('textarea').value
-      textarea.value = ''
-    let modal = document.querySelector('.container')
-      modal.classList.remove('mostrar')
+        textarea.value = ''
+    closeModal()
       // criar função para mostrar pontos toda vez q salva mais um --- showPontos()
 }
 
-function closeModal(button){
+function closeModal(){
   event.preventDefault()
   let input = document.getElementById('nome').value;
     input.value = ' '
@@ -90,16 +91,31 @@ function closeModal(button){
       modal.classList.remove('mostrar')
 }
 
-function insertValues(){
+function openModal(){
   let div = document.querySelector('.container')
     div.classList.add('mostrar')
 }
 
 function alterarMarcador(event){
   marker.setPosition(event.latLng)
+  newMarker = new google.maps.Marker({
+    position: event.latLng,
+    map: map,
+  })
 }
 
-
-
-
-
+function openWindowInfo(){
+  var contentString = '<div id="content">' +
+            '<div id="siteNotice">' +
+            '</div>' +
+            '<h2 id="firstHeading" class="firstHeading">Titulo_1</h2>' +
+            '<div id="bodyContent">' +
+            '<p><b>desciçãotitulo:</b> descrição1 ' +
+            '</div>' +
+            '<button onclick="myFunction()">Obter indicações</button>'
+            '</div>';
+  var infowindow = new google.maps.InfoWindow({
+    content: contentString
+  });
+    infowindow.open(map,marker)
+}
