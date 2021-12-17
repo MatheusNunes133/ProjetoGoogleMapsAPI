@@ -1,10 +1,11 @@
+require('dotenv').config();
 const Client = require('pg').Client
 const cliente = new Client({
-    user:'postgres',
-    password: 'postgres',
-    host: '172.18.0.2',
-    database:'GoogleMaps',
-    port: 5432
+    user:process.env.PG_USER,
+    password: process.env.PG_PASSWORD,
+    host: process.env.PG_HOST,
+    database: process.env.PG_DATABASE,
+    port: process.env.PG_PORT
 })
 
 cliente.connect().then(()=> console.log('cliente conectado')).catch((erro)=>{console.log(erro.stack)})

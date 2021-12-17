@@ -75,6 +75,7 @@ function salvar(){
       textarea.value = ''
     let modal = document.querySelector('.container')
       modal.classList.remove('mostrar')
+      getPontos()
 }
 
 function closeModal(button){
