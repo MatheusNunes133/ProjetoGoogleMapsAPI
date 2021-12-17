@@ -29,7 +29,9 @@ function initMap() {
     insertValues();
   })
   
-  getPontos()
+  window.addEventListener('load',()=>{
+    getPontos()
+  })
 }
 
 
@@ -75,7 +77,7 @@ function salvar(){
       textarea.value = ''
     let modal = document.querySelector('.container')
       modal.classList.remove('mostrar')
-      getPontos()
+      // criar função para mostrar pontos toda vez q salva mais um --- showPontos()
 }
 
 function closeModal(button){
