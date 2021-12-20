@@ -44,19 +44,21 @@ function getPontos(){
       return res.json()
     }).then((response)=>{
         console.log(response)
+        let arrayPontos = []
         for(let i=0; i<response.length;i++){
           let pontosCriados = new google.maps.LatLng(response[i].lat, response[i].lng)
-              saveMarker = new google.maps.Marker({
+              arrayPontos.push(saveMarker = new google.maps.Marker({
                 position: pontosCriados,
                 map:map,
-                draggable: true,
-              });
+                draggable: false,
+              }));
         }
+        openWindowInfo(arrayPontos, response)
     })
 }
 
 function salvar(){
-    let input = document.getElementById('nome').value;
+    let input = document.querySelector('#nome').value;
     let obj = {
       nomeLocal: input,
       desc: document.querySelector('textarea').value,
@@ -74,19 +76,19 @@ function salvar(){
     }).then((response =>{alert('inserido')}))
     .catch(error =>{alert('Falha ao salvar' + error)})
 
-      input.textContent = ''
+      input = ''
     let textarea = document.querySelector('textarea').value
-        textarea.value = ''
+        textarea = ''
     closeModal()
       // criar função para mostrar pontos toda vez q salva mais um --- showPontos()
 }
 
 function closeModal(){
   event.preventDefault()
-  let input = document.getElementById('nome').value;
-    input.value = ' '
-  let textarea = document.querySelector('textarea').value
-    textarea.value = ' '
+  let input = document.querySelector('#nome');
+      input.value = ''
+  let textarea = document.querySelector('textarea')
+    textarea.value = ''
   let modal = document.querySelector('.container')
       modal.classList.remove('mostrar')
 }
@@ -98,24 +100,21 @@ function openModal(){
 
 function alterarMarcador(event){
   marker.setPosition(event.latLng)
-  newMarker = new google.maps.Marker({
-    position: event.latLng,
-    map: map,
-  })
 }
 
-function openWindowInfo(){
-  var contentString = '<div id="content">' +
-            '<div id="siteNotice">' +
-            '</div>' +
-            '<h2 id="firstHeading" class="firstHeading">Titulo_1</h2>' +
-            '<div id="bodyContent">' +
-            '<p><b>desciçãotitulo:</b> descrição1 ' +
-            '</div>' +
-            '<button onclick="myFunction()">Obter indicações</button>'
-            '</div>';
-  var infowindow = new google.maps.InfoWindow({
-    content: contentString
-  });
-    infowindow.open(map,marker)
+function openWindowInfo(arrayPontos, response){
+  for(let i = 0;i<arrayPontos.length;i++){
+    arrayPontos[i].addListener('click', ()=>{
+      const contentString = `<div id="content">
+                                <h3>Nome:</h3>
+                                <p>${response[i].nome}</p>
+                                <h3>Descrição:</h3>
+                                <p>${response[i].descricao}</p>
+                              </div>`;
+      const infowindow = new google.maps.InfoWindow({
+          content: contentString,
+        });
+        infowindow.open(map, arrayPontos[i])
+    })
+  }
 }
